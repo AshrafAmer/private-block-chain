@@ -20,18 +20,15 @@ class Block {
             // Recalculate the hash of the Block
             this.hash = null;
             const recalculated_hash = SHA256(JSON.stringify(this)).toString();
+            // Reassigned hash with the original hash value
+            this.hash = current_hash;
             // Comparing if the hashes changed
-            if(current_hash !== recalculated_hash){
-                // Returning the Block is not valid
-                reject(Error('The Block is not valid'));
-            }
-            // Returning the Block is valid
-            resolve('The Block is valid');
-
+            resolve(current_hash === recalculated_hash)
         });
     }
 
     getBData() {
+        let self = this;
         return new Promise((resolve, reject)=>{
             // Resolve with the data if the object isn't the Genesis block
             if(self.previousBlockHash === null){
