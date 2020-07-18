@@ -30,7 +30,7 @@ class Blockchain {
                 block.height = self.chain.length;
                 block.time = new Date().getTime().toString().slice(0,-3);
                 if(self.height > -1)
-                    block.previousblockhash = self.chain[self.height].hash;
+                    block.previousBlockHash = self.chain[self.height].hash;
                 
                 block.hash = SHA256(JSON.stringify(block)).toString();
                 self.chain.push(block);
@@ -116,9 +116,7 @@ class Blockchain {
                     });
                 }
 
-                // block.height === blockchain length [start from zero]
-                // ==> block index: block.height - 1 && previousblock index: block.height - 2
-                if( _block.height - 2 > 0 && _block.previousblockhash !== self.chain[_block.height - 2]){
+                if( _block.height > 0 && _block.previousBlockHash !== self.chain[_block.height - 1]){
                     errorLog.push({
                         err: 'ERROR:: Chain is broken',
                         block: _block
